@@ -1,10 +1,9 @@
-from builtins import print
 import random
 import numpy as np
 
 class Agent(object):
-    def __init__(self, board):
-        self.board = board
+    def __init__(self):
+        self.board = 0
         self.conflict = 0
         self.conflict_list={1:[0,0,0],2:[0,0,0],3:[0,0,0],4:[0,0,0],5:[0,0,0],6:[0,0,0],7:[0,0,0],8:[0,0,0]}
 
@@ -68,8 +67,8 @@ class Agent(object):
                         f-=1
                         if self.board[k ][f ]:
                             cc += 1
-                    temp=self.conflict_list[j]
-                    self.conflict_list[j]=[cc+temp[0],m,n]
+                    # temp=self.conflict_list[j]
+                    self.conflict_list[j]=[cc,m,n]
                     self.conflict+=cc
         return self.conflict
 
@@ -80,7 +79,8 @@ class Agent(object):
                 break
         return None
 
-    def queen_move(self,m):
+    def queen_move(self,m,board):
+        self.board=board
         i=self.conflict_list[m]
         self.board[i[1]][i[2]]=0
         while True:
@@ -91,7 +91,6 @@ class Agent(object):
         return  np.array(self.board)
 
     def random_board(self):
-        r=[]
         c=[]
         self.board = np.array([
             [0, 0, 0, 0, 0, 0, 0, 0],
@@ -104,13 +103,11 @@ class Agent(object):
             [0, 0, 0, 0, 0, 0, 0, 0]]
         )
         for i in range(1,9):
-            m=random.randrange(8)
+            m=i-1
             n=random.randrange(8)
-            while m in r or n in c:
-                m = random.randrange(8)
+            while n in c:
                 n = random.randrange(8)
             self.board[m][n]=i
-            r.append(m)
             c.append(n)
         return self.board
 
